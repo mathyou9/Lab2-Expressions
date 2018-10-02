@@ -6,9 +6,18 @@
 
 class ExpressionManager : public ExpressionManagerInterface{
 public:
-  ExpressionManager(string isItbalanced, ){}
-  ~ExpressionManager(){}
+  ExpressionManager(){};
+  ~ExpressionManager(){};
 
+
+  /*
+	* Checks whether an expression is balanced on its parentheses
+	*
+	* - The given expression will have a space between every number or operator
+	*
+	* @return true if expression is balanced
+	* @return false otherwise
+	*/
   bool isBalanced(string expression);
 
   /**
@@ -52,6 +61,6 @@ private:
   string inExpression;
   string newInfix;
   string newEvaluate;
-  stack<string> balancedStack;
+  stack<char> stackOfChars;
 
-}
+};
