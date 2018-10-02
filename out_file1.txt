@@ -1,9 +1,8 @@
-isBalanced { { [ ( ) ] } ( ) } False
+isBalanced { { [ ( ) ] } ( ) } True
 isBalanced { [ ) } False
 isBalanced { ( [ ] } ) False
-isBalanced { False
-isBalanced { { ( ) [ { } ] ( [ ] ) } } False
+isBalanced { True
+isBalanced { { ( ) [ { } ] ( [ ] ) } } True
 isBalanced } False
 isBalanced ( } False
-isBalanced ( { { } } False
-isBalanced } { False
+isBalanced ( { { } } True
