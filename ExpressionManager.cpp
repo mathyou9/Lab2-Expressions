@@ -67,20 +67,28 @@ string ExpressionManager::postfixEvaluate(string postfixExpression){
   istringstream buf(postfixExpression);
   istream_iterator<string> beg(buf), end;
   vector<string> postFixVector(beg,end);
+  for(int i = 0; i < postFixVector.size(); i++){
+    cout << postFixVector[i] << " ";
+  }
   int postFixInt;
   cout << "more output" << endl;
   for(int i = 0; i < postFixVector.size(); i++){
-    if(isdigit(postfixExpression[i])){
+    if(postfixExpression[i] == '0' || postfixExpression[i] == '1' ||
+    postfixExpression[i] == '2' || postfixExpression[i] == '3' ||
+    postfixExpression[i] == '4' || postfixExpression[i] == '5' ||
+    postfixExpression[i] == '6' || postfixExpression[i] == '7' ||
+    postfixExpression[i] == '8' || postfixExpression[i] == '9'){
       postFixInt = atoi(postFixVector.at(i).c_str());
-      cout << postFixInt << " ";
+      stackOfInts.push(postFixInt);
+      //cout << stackOfInts.top() << " ";
     } else{
-      if(postfixExpression == '-'){
+      if(postfixExpression[i] == '-'){
 
-      }else if(postfixExpression == '+'){
+      }else if(postfixExpression[i] == '+'){
 
-      }else if(postfixExpression == '*'){
+      }else if(postfixExpression[i] == '*'){
 
-      }else if(postfixExpression == '/'){
+      }else if(postfixExpression[i] == '/'){
 
       }
     }
