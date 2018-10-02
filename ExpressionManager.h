@@ -62,6 +62,6 @@ private:
   string newInfix;
   string newEvaluate;
   stack<char> stackOfChars;
-  stack<char> rightChars;
+  stack<int> stackOfInts;
 
 };

@@ -2,6 +2,10 @@
 #include "ExpressionManager.h"
 #include <iostream>
 #include <string>
+#include <sstream>
+#include <iterator>
+#include <vector>
+#include <cctype>
 
 using namespace std;
 
@@ -60,7 +64,29 @@ string ExpressionManager::postfixToInfix(string postfixExpression){
 }
 
 string ExpressionManager::postfixEvaluate(string postfixExpression){
+  istringstream buf(postfixExpression);
+  istream_iterator<string> beg(buf), end;
+  vector<string> postFixVector(beg,end);
+  int postFixInt;
+  cout << "more output" << endl;
+  for(int i = 0; i < postFixVector.size(); i++){
+    if(isdigit(postfixExpression[i])){
+      postFixInt = atoi(postFixVector.at(i).c_str());
+      cout << postFixInt << " ";
+    } else{
+      if(postfixExpression == '-'){
 
+      }else if(postfixExpression == '+'){
+
+      }else if(postfixExpression == '*'){
+
+      }else if(postfixExpression == '/'){
+
+      }
+    }
+  }
+
+  return newInfix;
 }
 
 string ExpressionManager::infixToPostfix(string infixExpression){
