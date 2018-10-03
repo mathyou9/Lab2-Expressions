@@ -67,9 +67,11 @@ string ExpressionManager::postfixEvaluate(string postfixExpression){
   istringstream buf(postfixExpression);
   istream_iterator<string> beg(buf), end;
   vector<string> postFixVector(beg,end);
+  cout << "Original" << endl;
   for(int i = 0; i < postFixVector.size(); i++){
     cout << postFixVector[i] << " ";
   }
+  cout << endl;
   int postFixInt;
   cout << "more output" << endl;
   for(int i = 0; i < postFixVector.size(); i++){
@@ -80,19 +82,20 @@ string ExpressionManager::postfixEvaluate(string postfixExpression){
     postfixExpression[i] == '8' || postfixExpression[i] == '9'){
       postFixInt = atoi(postFixVector.at(i).c_str());
       stackOfInts.push(postFixInt);
-      //cout << stackOfInts.top() << " ";
+      cout << stackOfInts.top() << " ";
     } else{
       if(postfixExpression[i] == '-'){
-
+        cout << "- ";
       }else if(postfixExpression[i] == '+'){
-
+        cout << "+ ";
       }else if(postfixExpression[i] == '*'){
-
+        cout << "* ";
       }else if(postfixExpression[i] == '/'){
-
+        cout << "/ ";
       }
     }
   }
+  cout << endl;
 
   return newInfix;
 }
