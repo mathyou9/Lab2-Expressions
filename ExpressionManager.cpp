@@ -41,6 +41,9 @@ bool ExpressionManager::isBalanced(string expression){
 }
 
 string ExpressionManager::postfixToInfix(string postfixExpression){
+  istringstream buf(postfixExpression);
+  istream_iterator<string> beg(buf), end;
+  vector<string> postFixVector(beg,end);
 
 }
 
@@ -49,78 +52,60 @@ string ExpressionManager::postfixEvaluate(string postfixExpression){
   istream_iterator<string> beg(buf), end;
   vector<string> postFixVector(beg,end);
   int math1, math2, mathCombined;
-  cout << "Original" << endl;
-  for(int i = 0; i < postFixVector.size(); i++){
-    cout << postFixVector[i] << " ";
-  }
-  cout << endl;
   int postFixInt;
-  cout << "more output" << endl;
   for(int i = 0; i < postFixVector.size(); i++){
     if(postFixVector.at(i) == "-"){
-      cout << "- ";
       math1 = stackOfInts.top();
       stackOfInts.pop();
       math2 = stackOfInts.top();
       stackOfInts.pop();
       mathCombined = math2 - math1;
       stackOfInts.push(mathCombined);
-      newInfix = to_string(stackOfInts.top());
-      cout << mathCombined << " ";
+      newEvaluate = to_string(stackOfInts.top());
     }else if(postFixVector.at(i) == "+"){
-      cout << "+ ";
       math1 = stackOfInts.top();
       stackOfInts.pop();
       math2 = stackOfInts.top();
       stackOfInts.pop();
       mathCombined = math1 + math2;
       stackOfInts.push(mathCombined);
-      newInfix = to_string(stackOfInts.top());
-      cout << mathCombined << " ";
+      newEvaluate = to_string(stackOfInts.top());
     }else if(postFixVector.at(i) == "*"){
-      cout << "* ";
       math1 = stackOfInts.top();
       stackOfInts.pop();
       math2 = stackOfInts.top();
       stackOfInts.pop();
       mathCombined = math1 * math2;
       stackOfInts.push(mathCombined);
-      newInfix = to_string(stackOfInts.top());
-      cout << mathCombined << " ";
+      newEvaluate = to_string(stackOfInts.top());
     }else if(postFixVector.at(i) == "/"){
-      cout << "/ ";
       math1 = stackOfInts.top();
       stackOfInts.pop();
       math2 = stackOfInts.top();
       stackOfInts.pop();
       mathCombined = (int)math2 / (int)math1;
       stackOfInts.push(mathCombined);
-      newInfix = to_string(stackOfInts.top());
-      cout << mathCombined << " ";
+      newEvaluate = to_string(stackOfInts.top());
     }else if(postFixVector.at(i) == "%"){
-        cout << "% ";
         math1 = stackOfInts.top();
         stackOfInts.pop();
         math2 = stackOfInts.top();
         stackOfInts.pop();
         mathCombined = (int)math2 % (int)math1;
         stackOfInts.push(mathCombined);
-        newInfix = to_string(stackOfInts.top());
-        cout << mathCombined << " ";
+        newEvaluate = to_string(stackOfInts.top());
     }
     else if(atoi(postFixVector.at(i).c_str()) >= 0){
       postFixInt = atoi(postFixVector.at(i).c_str());
       stackOfInts.push(postFixInt);
-      newInfix = to_string(stackOfInts.top());
-      cout << stackOfInts.top() << " ";
+      newEvaluate = to_string(stackOfInts.top());
     }
     if(stackOfInts.size() < 2){
-      newInfix = to_string(stackOfInts.top());
+      newEvaluate = to_string(stackOfInts.top());
     }
   }
-  cout << endl;
 
-  return newInfix;
+  return newEvaluate;
 }
 
 string ExpressionManager::infixToPostfix(string infixExpression){
