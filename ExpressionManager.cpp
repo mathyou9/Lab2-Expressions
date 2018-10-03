@@ -43,8 +43,10 @@ bool ExpressionManager::isBalanced(string expression){
 string ExpressionManager::postfixToInfix(string postfixExpression){
   istringstream buf(postfixExpression);
   istream_iterator<string> beg(buf), end;
-  vector<string> postFixVector(beg,end);
-
+  vector<string> postFixToInfixVector(beg,end);
+  for(int i = 0; i < postFixToInfixVector.size(); i++){
+    
+  }
 }
 
 string ExpressionManager::postfixEvaluate(string postfixExpression){
