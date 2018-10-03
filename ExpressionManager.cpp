@@ -10,53 +10,34 @@
 using namespace std;
 
 bool ExpressionManager::isBalanced(string expression){
-  char charSet;
-  cout << "Original";
-  cout << endl << expression << endl;
-  cout << "length" << expression.length() << endl;
-  if(expression.length() <= 1){
-    return false;
-  }
-  cout << "indexed" << endl;
-  /*
-  if(expression.length() % 2 != 0){
-    return false;
-  }
-  */
-  for (int i=0; i < expression.length(); i++){
-    if(expression.at(i) == '(' || expression.at(i) == '[' || expression.at(i) == '{'){
-      stackOfChars.push(expression.at(i));
-      cout << stackOfChars.top() << " ";
-    }
-    else if(expression.at(i) == ')' || expression.at(i) == ']' || expression.at(i) == '}'){
-      cout << expression.at(i) << " ";
-      if(stackOfChars.top() == '(' && expression.at(i) == ')'){
+  stringstream ss;
+  string expressionString;
+  stack<string> stackOfChars;
+  ss << expression;
+  while(ss >> expressionString){
+    if(expressionString == "(" || expressionString == "{" || expressionString == "["){
+      stackOfChars.push(expressionString);
+    }else if(expressionString == ")" || expressionString == "}" || expressionString == "]"){
+      if(stackOfChars.empty()){
+        return false;
+      }
+      if(stackOfChars.top() == "(" && expressionString == ")"){
         stackOfChars.pop();
-        cout << expression.length() << " " << stackOfChars.size() << endl;
-        if(expression.length() == 0){
-          cout << ") true" << endl;
-          return true;
-        }
-      } else if(stackOfChars.top() == '[' && expression.at(i) == ']'){
+      }
+      else if(stackOfChars.top() == "{" && expressionString == "}"){
         stackOfChars.pop();
-        cout << expression.length() << " " << stackOfChars.size() << endl;
-        if(expression.length() == 0){
-          cout << "] true" << endl;
-          return true;
-        }
-      } else if(stackOfChars.top() == '{' && expression.at(i) == '}'){
+      }
+      else if(stackOfChars.top() == "[" && expressionString == "]"){
         stackOfChars.pop();
-        cout << expression.length() << " " << stackOfChars.size() << endl;
-        if(expression.length() == 0){
-          cout << "} true" << endl;
-          return true;
-        }
-      } else{
+      }else{
         return false;
       }
     }
   }
-  cout << endl;
+  if(!stackOfChars.empty()){
+    return false;
+  }
+  return true;
 }
 
 string ExpressionManager::postfixToInfix(string postfixExpression){
