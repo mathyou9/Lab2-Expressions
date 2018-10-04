@@ -155,5 +155,40 @@ string ExpressionManager::postfixEvaluate(string postfixExpression){
 }
 
 string ExpressionManager::infixToPostfix(string infixExpression){
+  istringstream buf(infixExpression);
+  istream_iterator<string> beg(buf), end;
+  vector<string> infixToPostfixVector(beg,end);
+  string completePost;
+  cout << "Original:" << endl;
+  for(int i = 0; i < infixToPostfixVector.size(); i++){
+    cout << infixToPostfixVector.at(i) << " ";
+  }
+  cout << endl << "New:" << endl;
 
+  for(int i = 0; i < infixToPostfixVector.size(); i++){
+    if(infixToPostfixVector.at(i) == "+"){
+
+    }else if(infixToPostfixVector.at(i) == "-"){
+
+    }else if(infixToPostfixVector.at(i) == "*"){
+
+    }else if(infixToPostfixVector.at(i) == "/"){
+      
+    }else if(infixToPostfixVector.at(i) == "%"){
+
+    }else if(infixToPostfixVector.at(i) == "("){
+
+    }else if(infixToPostfixVector.at(i) == ")"){
+
+    }else if(atoi(infixToPostfixVector.at(i).c_str()) >= 0){
+      stackFixed.push(infixToPostfixVector.at(i));
+    }
+
+  }
+  for(int i = 0; i < stackFixed.size(); i++){
+    completePost = completePost + stackFixed.top();
+    stackFixed.pop();
+  }
+
+  return completePost;
 }

@@ -64,5 +64,6 @@ private:
   stack<char> stackOfChars;
   stack<int> stackOfInts;
   stack<string> stackOfFixedChars;
+  stack<string> stackFixed;
 
 };

@@ -1,2 +1,14 @@
 infixToPostfix 40 * ( 2 + 4 - ( 2 + 2 ) ) - 4 / 5 / 6
-  
+  6542
+infixToPostfix ( 3 + 2 + 13 ) / 4
+  41323
+infixToPostfix 43 + 2 * 19
+  192432
+infixToPostfix ( ( 3 + 4 ) * ( 3 - 2 ) - ( 2 / 2 ) ) + 24 / 3
+  3242223
+infixToPostfix 3 + 5 * 6 - 8
+  86534
+infixToPostfix 48 + 36 % 7 - 2
+  273648
+infixToPostfix ( 0 + ( 1 - ( 2 + ( 3 - ( 4 + ( 5 - ( 6 + ( 7 - ( 8 + 9 ) ) ) ) ) ) ) ) )
+  9876543
