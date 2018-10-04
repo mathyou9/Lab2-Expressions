@@ -45,11 +45,6 @@ string ExpressionManager::postfixToInfix(string postfixExpression){
   istream_iterator<string> beg(buf), end;
   vector<string> postFixToInfixVector(beg,end);
   string number1, number2, insertHere, complete;
-  cout << "before:" << endl;
-  for(int i = 0; i < postFixToInfixVector.size(); i++){
-    cout << postFixToInfixVector.at(i) << " ";
-  }
-  cout << endl << "After:" << endl;
   for(int i = 0; i < postFixToInfixVector.size(); i++){
     if(postFixToInfixVector.at(i) == "-"){
       number2 = stackOfFixedChars.top();
