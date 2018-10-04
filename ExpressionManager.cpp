@@ -44,9 +44,58 @@ string ExpressionManager::postfixToInfix(string postfixExpression){
   istringstream buf(postfixExpression);
   istream_iterator<string> beg(buf), end;
   vector<string> postFixToInfixVector(beg,end);
+  string number1, number2, insertHere, complete;
+  cout << "before:" << endl;
   for(int i = 0; i < postFixToInfixVector.size(); i++){
-    
+    cout << postFixToInfixVector.at(i) << " ";
   }
+  cout << endl << "After:" << endl;
+  for(int i = 0; i < postFixToInfixVector.size(); i++){
+    if(postFixToInfixVector.at(i) == "-"){
+      number2 = stackOfFixedChars.top();
+      stackOfFixedChars.pop();
+      number1 = stackOfFixedChars.top();
+      stackOfFixedChars.pop();
+      insertHere = "( " + number1 + " - " + number2 + " )";
+      stackOfFixedChars.push(insertHere);
+    }else if(postFixToInfixVector.at(i) == "+"){
+      number2 = stackOfFixedChars.top();
+      stackOfFixedChars.pop();
+      number1 = stackOfFixedChars.top();
+      stackOfFixedChars.pop();
+      insertHere = "( " + number1 + " + " + number2 + " )";
+      stackOfFixedChars.push(insertHere);
+    }else if(postFixToInfixVector.at(i) == "*"){
+      number2 = stackOfFixedChars.top();
+      stackOfFixedChars.pop();
+      number1 = stackOfFixedChars.top();
+      stackOfFixedChars.pop();
+      insertHere = "( " + number1 + " * " + number2 + " )";
+      stackOfFixedChars.push(insertHere);
+    }else if(postFixToInfixVector.at(i) == "/"){
+      number2 = stackOfFixedChars.top();
+      stackOfFixedChars.pop();
+      number1 = stackOfFixedChars.top();
+      stackOfFixedChars.pop();
+      insertHere = "( " + number1 + " / " + number2 + " )";
+      stackOfFixedChars.push(insertHere);
+    }else if(postFixToInfixVector.at(i) == "%"){
+      number2 = stackOfFixedChars.top();
+      stackOfFixedChars.pop();
+      number1 = stackOfFixedChars.top();
+      stackOfFixedChars.pop();
+      insertHere = "( " + number1 + " % " + number2 + " )";
+      stackOfFixedChars.push(insertHere);
+    }else if(atoi(postFixToInfixVector.at(i).c_str()) >= 0){
+      stackOfFixedChars.push(postFixToInfixVector.at(i));
+    }
+  }
+  complete = "";
+  for(int i = 0; i < stackOfFixedChars.size(); i++){
+    complete = complete + stackOfFixedChars.top();
+    stackOfFixedChars.pop();
+  }
+  return complete;
 }
 
 string ExpressionManager::postfixEvaluate(string postfixExpression){

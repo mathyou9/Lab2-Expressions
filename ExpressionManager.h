@@ -63,5 +63,6 @@ private:
   string newEvaluate;
   stack<char> stackOfChars;
   stack<int> stackOfInts;
+  stack<string> stackOfFixedChars;
 
 };
