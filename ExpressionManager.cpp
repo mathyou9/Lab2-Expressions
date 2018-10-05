@@ -47,6 +47,9 @@ string ExpressionManager::postfixToInfix(string postfixExpression){
   string number1, number2, insertHere, complete;
   for(int i = 0; i < postFixToInfixVector.size(); i++){
     if(postFixToInfixVector.at(i) == "-"){
+      if(i < 1){
+        return "invalid";
+      }
       number2 = stackOfFixedChars.top();
       stackOfFixedChars.pop();
       number1 = stackOfFixedChars.top();
@@ -54,6 +57,9 @@ string ExpressionManager::postfixToInfix(string postfixExpression){
       insertHere = "( " + number1 + " - " + number2 + " )";
       stackOfFixedChars.push(insertHere);
     }else if(postFixToInfixVector.at(i) == "+"){
+      if(i < 2){
+        return "invalid";
+      }
       number2 = stackOfFixedChars.top();
       stackOfFixedChars.pop();
       number1 = stackOfFixedChars.top();
@@ -61,6 +67,9 @@ string ExpressionManager::postfixToInfix(string postfixExpression){
       insertHere = "( " + number1 + " + " + number2 + " )";
       stackOfFixedChars.push(insertHere);
     }else if(postFixToInfixVector.at(i) == "*"){
+      if(i < 1){
+        return "invalid";
+      }
       number2 = stackOfFixedChars.top();
       stackOfFixedChars.pop();
       number1 = stackOfFixedChars.top();
@@ -68,6 +77,9 @@ string ExpressionManager::postfixToInfix(string postfixExpression){
       insertHere = "( " + number1 + " * " + number2 + " )";
       stackOfFixedChars.push(insertHere);
     }else if(postFixToInfixVector.at(i) == "/"){
+      if(i < 1){
+        return "invalid";
+      }
       number2 = stackOfFixedChars.top();
       stackOfFixedChars.pop();
       number1 = stackOfFixedChars.top();
@@ -75,6 +87,9 @@ string ExpressionManager::postfixToInfix(string postfixExpression){
       insertHere = "( " + number1 + " / " + number2 + " )";
       stackOfFixedChars.push(insertHere);
     }else if(postFixToInfixVector.at(i) == "%"){
+      if(i < 1){
+        return "invalid";
+      }
       number2 = stackOfFixedChars.top();
       stackOfFixedChars.pop();
       number1 = stackOfFixedChars.top();
@@ -100,7 +115,9 @@ string ExpressionManager::postfixEvaluate(string postfixExpression){
   int math1, math2, mathCombined;
   int postFixInt;
   for(int i = 0; i < postFixVector.size(); i++){
-    if(postFixVector.at(i) == "-"){
+    if(postFixVector.at(0) == "}" || postFixVector.at(0) == ")" || postFixVector.at(0) == "]"){
+      return "invalid";
+    }else if(postFixVector.at(i) == "-"){
       if(i < 1){
         return "invalid";
       }
@@ -223,6 +240,7 @@ string ExpressionManager::infixToPostfix(string infixExpression){
 	while (temp >> temp_stuff) {
 		if (isOperator(temp_stuff) == false && isOpen(temp_stuff) == false && isInteger(temp_stuff) == false &&
 				isClosed(temp_stuff) == false) {
+          return "invalid";
 		}
 	}
 	string previous;
