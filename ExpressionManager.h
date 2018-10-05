@@ -66,6 +66,7 @@ private:
   string inExpression;
   string newInfix;
   string newEvaluate;
+  bool isValid;
   stack<char> stackOfChars;
   stack<int> stackOfInts;
   stack<string> stackOfFixedChars;

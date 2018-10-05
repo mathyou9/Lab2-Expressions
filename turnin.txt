@@ -66,19 +66,19 @@ postfixEvaluate } 78 97 + 6 / 5 +
 postfixToInfix 3 + 3 /
   invalid
 postfixToInfix 3 3 4 +
-  ( 3 + 4 )3
+  invalid
 postfixToInfix *
   invalid
 postfixToInfix + 3 3
   invalid
 postfixToInfix 3 3
-  33
+  invalid
 postfixToInfix five plus three
-  threeplus
+  invalid
 postfixToInfix 4.3 2 +
-  ( 4.3 + 2 )five
+  invalid
 postfixToInfix 56 67 34 + - * 1
-  1
+  invalid
 infixToPostfix { { 2 + 4 }
   invalid
 infixToPostfix 2 + a

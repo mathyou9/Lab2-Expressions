@@ -41,153 +41,109 @@ bool ExpressionManager::isBalanced(string expression){
 }
 
 string ExpressionManager::postfixToInfix(string postfixExpression){
-  istringstream buf(postfixExpression);
-  istream_iterator<string> beg(buf), end;
-  vector<string> postFixToInfixVector(beg,end);
-  string number1, number2, insertHere, complete;
-  for(int i = 0; i < postFixToInfixVector.size(); i++){
-    if(postFixToInfixVector.at(i) == "-"){
-      if(i < 1){
-        return "invalid";
-      }
-      number2 = stackOfFixedChars.top();
-      stackOfFixedChars.pop();
-      number1 = stackOfFixedChars.top();
-      stackOfFixedChars.pop();
-      insertHere = "( " + number1 + " - " + number2 + " )";
-      stackOfFixedChars.push(insertHere);
-    }else if(postFixToInfixVector.at(i) == "+"){
-      if(i < 2){
-        return "invalid";
-      }
-      number2 = stackOfFixedChars.top();
-      stackOfFixedChars.pop();
-      number1 = stackOfFixedChars.top();
-      stackOfFixedChars.pop();
-      insertHere = "( " + number1 + " + " + number2 + " )";
-      stackOfFixedChars.push(insertHere);
-    }else if(postFixToInfixVector.at(i) == "*"){
-      if(i < 1){
-        return "invalid";
-      }
-      number2 = stackOfFixedChars.top();
-      stackOfFixedChars.pop();
-      number1 = stackOfFixedChars.top();
-      stackOfFixedChars.pop();
-      insertHere = "( " + number1 + " * " + number2 + " )";
-      stackOfFixedChars.push(insertHere);
-    }else if(postFixToInfixVector.at(i) == "/"){
-      if(i < 1){
-        return "invalid";
-      }
-      number2 = stackOfFixedChars.top();
-      stackOfFixedChars.pop();
-      number1 = stackOfFixedChars.top();
-      stackOfFixedChars.pop();
-      insertHere = "( " + number1 + " / " + number2 + " )";
-      stackOfFixedChars.push(insertHere);
-    }else if(postFixToInfixVector.at(i) == "%"){
-      if(i < 1){
-        return "invalid";
-      }
-      number2 = stackOfFixedChars.top();
-      stackOfFixedChars.pop();
-      number1 = stackOfFixedChars.top();
-      stackOfFixedChars.pop();
-      insertHere = "( " + number1 + " % " + number2 + " )";
-      stackOfFixedChars.push(insertHere);
-    }else if(atoi(postFixToInfixVector.at(i).c_str()) >= 0){
-      stackOfFixedChars.push(postFixToInfixVector.at(i));
+    istringstream iss(postfixExpression);
+    istream_iterator<string> beg(iss), end;
+    vector<string> pfVector(beg, end);
+    string postfixString = postfixExpression;
+    stack<string> operandStack;
+    string isDigitCheck;
+
+    for (int i = 0; i < pfVector.size(); i++) {
+        isDigitCheck = pfVector[i];
+        if (isdigit(isDigitCheck[0])) {
+            if(isDigitCheck[1] == '.') {
+                return "invalid";
+            }
+            else {
+                operandStack.push(pfVector[i]);
+            }
+
+        }
+        else if (pfVector[i] == "+" || pfVector[i] == "-" || pfVector[i] == "*"
+            || pfVector[i] == "/" || pfVector[i] == "%") {
+            if (operandStack.size() < 2) {
+                return "invalid";
+            }
+            else {
+                string newString;
+
+                string o1 = operandStack.top();
+                operandStack.pop();
+                string o2 = operandStack.top();
+                operandStack.pop();
+                newString = "( " + o2 + " " + pfVector[i] + " " + o1 + " )";
+                operandStack.push(newString);
+            }
+        }
     }
-  }
-  complete = "";
-  for(int i = 0; i < stackOfFixedChars.size(); i++){
-    complete = complete + stackOfFixedChars.top();
-    stackOfFixedChars.pop();
-  }
-  return complete;
+    if (operandStack.size() == 1) {
+        postfixString = operandStack.top();
+        return postfixString;
+    }
+    else {
+        return "invalid";
+    }
 }
-
 string ExpressionManager::postfixEvaluate(string postfixExpression){
-  istringstream buf(postfixExpression);
-  istream_iterator<string> beg(buf), end;
-  vector<string> postFixVector(beg,end);
-  int math1, math2, mathCombined;
-  int postFixInt;
-  for(int i = 0; i < postFixVector.size(); i++){
-    if(postFixVector.at(0) == "}" || postFixVector.at(0) == ")" || postFixVector.at(0) == "]"){
-      return "invalid";
-    }else if(postFixVector.at(i) == "-"){
-      if(i < 1){
-        return "invalid";
-      }
-      math1 = stackOfInts.top();
-      stackOfInts.pop();
-      math2 = stackOfInts.top();
-      stackOfInts.pop();
-      mathCombined = math2 - math1;
-      stackOfInts.push(mathCombined);
-      newEvaluate = to_string(stackOfInts.top());
-    }else if(postFixVector.at(i) == "+"){
-      if(i < 1){
-        return "invalid";
-      }
-      math1 = stackOfInts.top();
-      stackOfInts.pop();
-      math2 = stackOfInts.top();
-      stackOfInts.pop();
-      mathCombined = math1 + math2;
-      stackOfInts.push(mathCombined);
-      newEvaluate = to_string(stackOfInts.top());
-    }else if(postFixVector.at(i) == "*"){
-      if(i < 1){
-        return "invalid";
-      }
-      math1 = stackOfInts.top();
-      stackOfInts.pop();
-      math2 = stackOfInts.top();
-      stackOfInts.pop();
-      mathCombined = math1 * math2;
-      stackOfInts.push(mathCombined);
-      newEvaluate = to_string(stackOfInts.top());
-    }else if(postFixVector.at(i) == "/"){
-      if(i < 1){
-        return "invalid";
-      }
-
-      math1 = stackOfInts.top();
-      stackOfInts.pop();
-      math2 = stackOfInts.top();
-      stackOfInts.pop();
-      if(math1 == 0){
-        return "invalid";
-      }
-      mathCombined = (int)math2 / (int)math1;
-      stackOfInts.push(mathCombined);
-      newEvaluate = to_string(stackOfInts.top());
-    }else if(postFixVector.at(i) == "%"){
-      if(i < 1){
-        return "invalid";
-      }
-      math1 = stackOfInts.top();
-      stackOfInts.pop();
-      math2 = stackOfInts.top();
-      stackOfInts.pop();
-      mathCombined = (int)math2 % (int)math1;
-      stackOfInts.push(mathCombined);
-      newEvaluate = to_string(stackOfInts.top());
+    int a;
+    int b;
+    double c;
+    int size;
+    stringstream ss;
+    ss << postfixExpression;
+    isValid = false;
+    while (ss >> postfixExpression) {
+        if (postfixExpression == ")" || postfixExpression == "]" || postfixExpression == "}") {
+            return "invalid";
+        }
+        //check for operator
+        if ((postfixExpression == "+") || (postfixExpression == "-") || (postfixExpression == "*") || (postfixExpression == "/") || (postfixExpression == "%")) {
+            if (stackOfInts.size() < 2) {
+                return "invalid";
+            }
+            int a = stackOfInts.top();
+            stackOfInts.pop();
+            int b = stackOfInts.top();
+            stackOfInts.pop();
+            switch (postfixExpression[0]) {
+            case '+':
+                stackOfInts.push(b + a);
+                break;
+            case '-':
+                stackOfInts.push(b - a);
+                break;
+            case '*':
+                stackOfInts.push(b * a);
+                break;
+            case '/':
+                if (a == 0) {
+                    return "invalid";
+                }
+                stackOfInts.push(b / a);
+                break;
+            case '%':
+                if (a == 0) {
+                    return "invalid";
+                }
+                stackOfInts.push(b % a);
+                break;
+            }
+        }
+        //check for numeric
+        else if (isdigit(postfixExpression[0])) {
+            double num;
+            num = stoi(postfixExpression);
+            stackOfInts.push(num);
+            isValid = true;
+        }
+        else {
+            cout << "invalid" << endl;
+        }
     }
-    else if(atoi(postFixVector.at(i).c_str()) >= 0){
-      postFixInt = atoi(postFixVector.at(i).c_str());
-      stackOfInts.push(postFixInt);
-      newEvaluate = to_string(stackOfInts.top());
+    if (stackOfInts.empty()) {
+        return "invalid";
     }
-    if(stackOfInts.size() < 2){
-      newEvaluate = to_string(stackOfInts.top());
-    }
-  }
-
-  return newEvaluate;
+    return to_string(stackOfInts.top());
 }
 
 bool ExpressionManager::isOpen(string next_thing) { //false = not open             true = open
