@@ -45,6 +45,13 @@ public:
   */
   string postfixEvaluate(string postfixExpression);
 
+  bool process_operator(stack<string> &opStack, string &postfix, string &op);
+  int getPrecedence(string next_thing);
+
+  bool isOpen(string next_thing);
+  bool isClosed(string next_thing);
+  bool isInteger(string next_thing);
+  bool isOperator(string next_thing);
   /*
   * Converts an infix expression into a postfix expression
   * and returns the postfix expression

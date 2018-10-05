@@ -101,6 +101,9 @@ string ExpressionManager::postfixEvaluate(string postfixExpression){
   int postFixInt;
   for(int i = 0; i < postFixVector.size(); i++){
     if(postFixVector.at(i) == "-"){
+      if(i < 1){
+        return "invalid";
+      }
       math1 = stackOfInts.top();
       stackOfInts.pop();
       math2 = stackOfInts.top();
@@ -109,6 +112,9 @@ string ExpressionManager::postfixEvaluate(string postfixExpression){
       stackOfInts.push(mathCombined);
       newEvaluate = to_string(stackOfInts.top());
     }else if(postFixVector.at(i) == "+"){
+      if(i < 1){
+        return "invalid";
+      }
       math1 = stackOfInts.top();
       stackOfInts.pop();
       math2 = stackOfInts.top();
@@ -117,6 +123,9 @@ string ExpressionManager::postfixEvaluate(string postfixExpression){
       stackOfInts.push(mathCombined);
       newEvaluate = to_string(stackOfInts.top());
     }else if(postFixVector.at(i) == "*"){
+      if(i < 1){
+        return "invalid";
+      }
       math1 = stackOfInts.top();
       stackOfInts.pop();
       math2 = stackOfInts.top();
@@ -125,21 +134,31 @@ string ExpressionManager::postfixEvaluate(string postfixExpression){
       stackOfInts.push(mathCombined);
       newEvaluate = to_string(stackOfInts.top());
     }else if(postFixVector.at(i) == "/"){
+      if(i < 1){
+        return "invalid";
+      }
+
       math1 = stackOfInts.top();
       stackOfInts.pop();
       math2 = stackOfInts.top();
       stackOfInts.pop();
+      if(math1 == 0){
+        return "invalid";
+      }
       mathCombined = (int)math2 / (int)math1;
       stackOfInts.push(mathCombined);
       newEvaluate = to_string(stackOfInts.top());
     }else if(postFixVector.at(i) == "%"){
-        math1 = stackOfInts.top();
-        stackOfInts.pop();
-        math2 = stackOfInts.top();
-        stackOfInts.pop();
-        mathCombined = (int)math2 % (int)math1;
-        stackOfInts.push(mathCombined);
-        newEvaluate = to_string(stackOfInts.top());
+      if(i < 1){
+        return "invalid";
+      }
+      math1 = stackOfInts.top();
+      stackOfInts.pop();
+      math2 = stackOfInts.top();
+      stackOfInts.pop();
+      mathCombined = (int)math2 % (int)math1;
+      stackOfInts.push(mathCombined);
+      newEvaluate = to_string(stackOfInts.top());
     }
     else if(atoi(postFixVector.at(i).c_str()) >= 0){
       postFixInt = atoi(postFixVector.at(i).c_str());
@@ -154,41 +173,124 @@ string ExpressionManager::postfixEvaluate(string postfixExpression){
   return newEvaluate;
 }
 
+bool ExpressionManager::isOpen(string next_thing) { //false = not open             true = open
+	return (next_thing == "(" || next_thing == "{" || next_thing == "[");
+}
+
+bool ExpressionManager::isClosed(string next_thing) { //false = not closed         true = closed
+	return (next_thing == ")" || next_thing == "}" || next_thing == "]");
+}
+
+bool ExpressionManager::isInteger(string next_thing) {
+	stringstream isint;
+	isint << next_thing;
+	int num;
+  isint >> num;
+	return num;
+}
+
+bool ExpressionManager::isOperator(string next_thing) {
+	return (next_thing == "*" || next_thing == "/" || next_thing == "%"
+			|| next_thing == "+" || next_thing == "-");
+}
+int ExpressionManager::getPrecedence(string next_thing) {
+	int precedence = 0;
+	if (next_thing == "*" || next_thing == "/" || next_thing == "%") {
+		precedence = 3;
+	} else if (next_thing == "+" || next_thing == "-") {
+		precedence = 2;
+	} else if (next_thing == "(" || next_thing == ")" || next_thing == "{" || next_thing == "}" || next_thing == "[" || next_thing == "]") {
+		precedence = 1;
+	}
+	return precedence;
+}
 string ExpressionManager::infixToPostfix(string infixExpression){
-  istringstream buf(infixExpression);
-  istream_iterator<string> beg(buf), end;
-  vector<string> infixToPostfixVector(beg,end);
-  string completePost;
-  cout << "Original:" << endl;
-  for(int i = 0; i < infixToPostfixVector.size(); i++){
-    cout << infixToPostfixVector.at(i) << " ";
-  }
-  cout << endl << "New:" << endl;
-
-  for(int i = 0; i < infixToPostfixVector.size(); i++){
-    if(infixToPostfixVector.at(i) == "+"){
-
-    }else if(infixToPostfixVector.at(i) == "-"){
-
-    }else if(infixToPostfixVector.at(i) == "*"){
-
-    }else if(infixToPostfixVector.at(i) == "/"){
-      
-    }else if(infixToPostfixVector.at(i) == "%"){
-
-    }else if(infixToPostfixVector.at(i) == "("){
-
-    }else if(infixToPostfixVector.at(i) == ")"){
-
-    }else if(atoi(infixToPostfixVector.at(i).c_str()) >= 0){
-      stackFixed.push(infixToPostfixVector.at(i));
-    }
-
-  }
-  for(int i = 0; i < stackFixed.size(); i++){
-    completePost = completePost + stackFixed.top();
-    stackFixed.pop();
-  }
-
-  return completePost;
+  if (!isBalanced(infixExpression)) {
+			return "invalid";
+		}
+	stringstream tt(infixExpression);
+	for (int i = 0; i < tt.str().length(); i++) {
+			if (tt.str()[i] == '.') {
+				return "invalid";
+			}
+			if (tt.str().length() == 1) {
+				return "invalid";
+			}
+		}
+	string temp_stuff;
+	stringstream temp;
+	temp << infixExpression;
+	while (temp >> temp_stuff) {
+		if (isOperator(temp_stuff) == false && isOpen(temp_stuff) == false && isInteger(temp_stuff) == false &&
+				isClosed(temp_stuff) == false) {
+		}
+	}
+	string previous;
+	string next_thing;
+	string output_queue;
+	stack<string> post_fix_stack;
+	stringstream pf;
+	pf << infixExpression;
+	while (pf >> next_thing) {
+		if (isOperator(previous) && isOperator(next_thing)) {
+					return "invalid";
+				}
+		if (isOperator(previous) && isClosed(next_thing)) {
+					return "invalid";
+				}
+		if (isInteger(next_thing)) {
+			output_queue.append(next_thing);
+			output_queue.append(" ");
+		} else if (isOperator(next_thing) || isOpen(next_thing) || isClosed(next_thing)) {
+				if (next_thing == "(" || next_thing == "{" || next_thing == "[") {
+					post_fix_stack.push(next_thing);
+				}
+				else if (post_fix_stack.empty()) {
+					post_fix_stack.push(next_thing);
+				}
+				else if (getPrecedence(next_thing) == 3 && getPrecedence(post_fix_stack.top()) != 3) {
+					post_fix_stack.push(next_thing);
+				}
+				else if (getPrecedence(next_thing) == getPrecedence(post_fix_stack.top())) {
+					if (post_fix_stack.top() != "(" && post_fix_stack.top() != "[" && post_fix_stack.top() != "{" && post_fix_stack.top() != ")" && post_fix_stack.top() != "]" && post_fix_stack.top() != "}") {
+						output_queue.append(post_fix_stack.top());
+						output_queue.append(" ");
+					}
+					post_fix_stack.pop();
+					post_fix_stack.push(next_thing);
+				}
+				else if (getPrecedence(next_thing) == 2 && getPrecedence(post_fix_stack.top()) == 3) {
+					if (post_fix_stack.top() != "(" && post_fix_stack.top() != "[" && post_fix_stack.top() != "{" && post_fix_stack.top() != ")" && post_fix_stack.top() != "]" && post_fix_stack.top() != "}") {
+					output_queue.append(post_fix_stack.top());
+					output_queue.append(" ");
+					}
+					post_fix_stack.pop();
+					post_fix_stack.push(next_thing);
+				}
+				else if (getPrecedence(next_thing) == 2 && getPrecedence(post_fix_stack.top()) == 1) {
+					post_fix_stack.push(next_thing);
+				}
+				else if (next_thing == ")" || next_thing == "]" || next_thing == "}") {
+					while (post_fix_stack.top() != "(" && post_fix_stack.top() != "{" && post_fix_stack.top() != "[") {
+					if (post_fix_stack.top() != "(" && post_fix_stack.top() != "[" && post_fix_stack.top() != "{" && post_fix_stack.top() != ")" && post_fix_stack.top() != "]" && post_fix_stack.top() != "}") {
+						output_queue.append(post_fix_stack.top());
+						output_queue.append(" ");
+					}
+					post_fix_stack.pop();
+					}
+					if (post_fix_stack.top() == "(" || post_fix_stack.top() == "{" || post_fix_stack.top() == "[") {
+						post_fix_stack.pop();
+					}
+				}
+		}
+		previous = next_thing;
+	}
+	while (post_fix_stack.size() != 0) {
+		output_queue.append(post_fix_stack.top());
+		if (post_fix_stack.size() != 1) {
+			output_queue.append(" ");
+		}
+		post_fix_stack.pop();
+	}
+	return output_queue;
 }
